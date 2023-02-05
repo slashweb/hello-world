@@ -28,9 +28,9 @@ const Footer = () => {
           align={{ base: "center", md: "center" }}
         >
           <Text>
-            © {new Date().getFullYear()} Original designs by
-            <Link ml={1} href="https://twitter.com/pablostanley">
-              Pablo Stanley 🎨
+            © {new Date().getFullYear()} Powered by
+            <Link ml={1} href="https://slashweb.com.mx" target={'_blank'}>
+              Slashweb
             </Link>
           </Text>
         </Container>
