@@ -1,6 +1,6 @@
-export const CoursesArtifact = {
+export const UsersArtifact = {
   address: {
-    3141: '0xdc03B0D8787c7Dd0a2735Cc8682122973882AEd3'
+    3141: '0x8eeB02Bd5aEC8C757323557A12048e921fA5A85c'
   },
   abi: [
     {
@@ -32,11 +32,6 @@ export const CoursesArtifact = {
       "outputs": [
         {
           "components": [
-            {
-              "internalType": "address",
-              "name": "_key",
-              "type": "address"
-            },
             {
               "internalType": "string",
               "name": "name",
@@ -72,11 +67,6 @@ export const CoursesArtifact = {
       "outputs": [
         {
           "components": [
-            {
-              "internalType": "address",
-              "name": "_key",
-              "type": "address"
-            },
             {
               "internalType": "string",
               "name": "name",
@@ -118,11 +108,6 @@ export const CoursesArtifact = {
       "outputs": [
         {
           "components": [
-            {
-              "internalType": "address",
-              "name": "_key",
-              "type": "address"
-            },
             {
               "internalType": "string",
               "name": "name",

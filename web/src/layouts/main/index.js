@@ -20,8 +20,12 @@ const Links = [
     to: "/",
   },
   {
-    name: "Content",
-    to: "/content",
+    name: "Courses",
+    to: "/courses",
+  },
+  {
+    name: "Create content",
+    to: "/content-creator",
   },
 ];
 

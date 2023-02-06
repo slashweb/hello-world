@@ -1,0 +1,133 @@
+import {useCallback, useEffect, useState} from "react";
+import React from 'react'
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Stack,
+  Center,
+  Image,
+  Button,
+  Avatar,
+  useColorModeValue,
+  useToast
+} from '@chakra-ui/react';
+import {useWeb3React} from "@web3-react/core";
+import useUsers from '../../hooks/useUsers'
+
+const Home = () => {
+  const {active, account} = useWeb3React()
+  const [isLoading, setIsLoading] = useState(false)
+  const [state] = useState({name: '', category: ''})
+  const usersContract = useUsers();
+  const toast = useToast();
+
+  const getUsers = useCallback(async () => {
+    if (usersContract) {
+      const result = await usersContract?.methods?.getAllUsers()?.call()
+      console.log('result', result)
+    }
+  }, [usersContract])
+
+  useEffect(() => {
+    getUsers()
+  }, [getUsers])
+
+
+  const createNewUser = async () => {
+    setIsLoading(true)
+    usersContract?.methods?.createNewUser(state.name, state.category)?.send({
+      from: account
+    })
+      .on('transactionHash', (txHash) => {
+        toast({
+          title: 'Transaction send',
+          description: txHash,
+          status: 'info'
+        })
+      })
+      .on('receipt', () => {
+        toast({
+          title: 'Transaction confirmed',
+          description: 'Ready',
+          status: 'success'
+        })
+        setIsLoading(false)
+      })
+      .on('error', (err) => {
+        toast({
+          title: 'Transaction fail',
+          description: err.message,
+          status: 'error'
+        })
+        setIsLoading(false)
+      })
+  }
+
+  return (
+    <>
+      <Flex
+        minH={'100vh'}
+        align={'center'}
+        justify={'center'}
+        bg={'gray.50'}>
+        <Center py={6}>
+          <Box
+            maxW={'270px'}
+            w={'full'}
+            bg={useColorModeValue('white', 'gray.800')}
+            boxShadow={'2xl'}
+            rounded={'md'}
+            overflow={'hidden'}>
+            <Image
+              h={'120px'}
+              w={'full'}
+              src={
+                'https://images.unsplash.com/photo-1612865547334-09cb8cb455da?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
+              }
+              objectFit={'cover'}
+            />
+            <Flex justify={'center'} mt={-12}>
+              <Avatar
+                size={'xl'}
+                src={
+                  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
+                }
+                alt={'Author'}
+                css={{
+                  border: '2px solid white',
+                }}
+              />
+            </Flex>
+
+            <Box p={6}>
+              <Stack spacing={0} align={'center'} mb={5}>
+                <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
+                  Course name
+                </Heading>
+                <Text color={'gray.500'}>Category</Text>
+              </Stack>
+
+              <Button
+                w={'full'}
+                mt={8}
+                bg={useColorModeValue('#151f21', 'gray.900')}
+                color={'white'}
+                rounded={'md'}
+                _hover={{
+                  transform: 'translateY(-2px)',
+                  boxShadow: 'lg',
+                }}>
+                Follow
+              </Button>
+            </Box>
+          </Box>
+        </Center>
+      </Flex>
+    </>
+  )
+
+}
+
+export default Home;

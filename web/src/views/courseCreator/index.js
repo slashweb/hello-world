@@ -17,54 +17,8 @@ import {
 import {useWeb3React} from "@web3-react/core";
 import useUsers from '../../hooks/useUsers'
 
-const Home = () => {
-  const {active, account} = useWeb3React()
-  const [isLoading, setIsLoading] = useState(false)
-  const [state] = useState({name: '', category: ''})
-  const usersContract = useUsers();
-  const toast = useToast();
+const courseCreator = () => {
 
-  const getUsers = useCallback(async () => {
-    if (usersContract) {
-      const result = await usersContract?.methods?.getAllUsers()?.call()
-      console.log('result', result)
-    }
-  }, [usersContract])
-
-  useEffect(() => {
-    getUsers()
-  }, [getUsers])
-
-
-  const createNewUser = async () => {
-    setIsLoading(true)
-    usersContract?.methods?.createNewUser(state.name, state.category)?.send({
-      from: account
-    })
-      .on('transactionHash', (txHash) => {
-        toast({
-          title: 'Transaction send',
-          description: txHash,
-          status: 'info'
-        })
-      })
-      .on('receipt', () => {
-        toast({
-          title: 'Transaction confirmed',
-          description: 'Ready',
-          status: 'success'
-        })
-        setIsLoading(false)
-      })
-      .on('error', (err) => {
-        toast({
-          title: 'Transaction fail',
-          description: err.message,
-          status: 'error'
-        })
-        setIsLoading(false)
-      })
-  }
 
   return (
     <>
@@ -75,7 +29,7 @@ const Home = () => {
         bg={'gray.50'}>
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'4xl'}>Complete your profile</Heading>
+            <Heading fontSize={'4xl'}>Creating new content</Heading>
             <Text fontSize={'lg'} color={'gray.600'}>
               To start creating content
             </Text>
@@ -139,4 +93,4 @@ const Home = () => {
 
 }
 
-export default Home;
+export default courseCreator;
