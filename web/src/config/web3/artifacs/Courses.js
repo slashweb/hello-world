@@ -1,6 +1,6 @@
 export const CoursesArtifact = {
   address: {
-    3141: '0xdc03B0D8787c7Dd0a2735Cc8682122973882AEd3'
+    3141: '0xa398EAb9348e4a10D4cD035C84efaC3dC1024f16'
   },
   abi: [
     {
@@ -19,24 +19,24 @@ export const CoursesArtifact = {
           "internalType": "string",
           "name": "_category",
           "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_description",
+          "type": "string"
         }
       ],
-      "name": "createNewUser",
+      "name": "createNewCourse",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
       "inputs": [],
-      "name": "getAllUsers",
+      "name": "getAllCourses",
       "outputs": [
         {
           "components": [
-            {
-              "internalType": "address",
-              "name": "_key",
-              "type": "address"
-            },
             {
               "internalType": "string",
               "name": "name",
@@ -49,7 +49,7 @@ export const CoursesArtifact = {
             },
             {
               "internalType": "string",
-              "name": "typeOfUser",
+              "name": "description",
               "type": "string"
             },
             {
@@ -58,49 +58,9 @@ export const CoursesArtifact = {
               "type": "bool"
             }
           ],
-          "internalType": "struct User.sUser[]",
+          "internalType": "struct Course.sCourse[]",
           "name": "",
           "type": "tuple[]"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "getMyUserData",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "address",
-              "name": "_key",
-              "type": "address"
-            },
-            {
-              "internalType": "string",
-              "name": "name",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "category",
-              "type": "string"
-            },
-            {
-              "internalType": "string",
-              "name": "typeOfUser",
-              "type": "string"
-            },
-            {
-              "internalType": "bool",
-              "name": "exists",
-              "type": "bool"
-            }
-          ],
-          "internalType": "struct User.sUser",
-          "name": "",
-          "type": "tuple"
         }
       ],
       "stateMutability": "view",
@@ -114,15 +74,10 @@ export const CoursesArtifact = {
           "type": "address"
         }
       ],
-      "name": "getUserByAddress",
+      "name": "getCoursesByAuthor",
       "outputs": [
         {
           "components": [
-            {
-              "internalType": "address",
-              "name": "_key",
-              "type": "address"
-            },
             {
               "internalType": "string",
               "name": "name",
@@ -135,7 +90,7 @@ export const CoursesArtifact = {
             },
             {
               "internalType": "string",
-              "name": "typeOfUser",
+              "name": "description",
               "type": "string"
             },
             {
@@ -144,9 +99,9 @@ export const CoursesArtifact = {
               "type": "bool"
             }
           ],
-          "internalType": "struct User.sUser",
+          "internalType": "struct Course.sCourse[]",
           "name": "",
-          "type": "tuple"
+          "type": "tuple[]"
         }
       ],
       "stateMutability": "view",

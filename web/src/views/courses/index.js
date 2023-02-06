@@ -17,54 +17,6 @@ import {useWeb3React} from "@web3-react/core";
 import useUsers from '../../hooks/useUsers'
 
 const Home = () => {
-  const {active, account} = useWeb3React()
-  const [isLoading, setIsLoading] = useState(false)
-  const [state] = useState({name: '', category: ''})
-  const usersContract = useUsers();
-  const toast = useToast();
-
-  const getUsers = useCallback(async () => {
-    if (usersContract) {
-      const result = await usersContract?.methods?.getAllUsers()?.call()
-      console.log('result', result)
-    }
-  }, [usersContract])
-
-  useEffect(() => {
-    getUsers()
-  }, [getUsers])
-
-
-  const createNewUser = async () => {
-    setIsLoading(true)
-    usersContract?.methods?.createNewUser(state.name, state.category)?.send({
-      from: account
-    })
-      .on('transactionHash', (txHash) => {
-        toast({
-          title: 'Transaction send',
-          description: txHash,
-          status: 'info'
-        })
-      })
-      .on('receipt', () => {
-        toast({
-          title: 'Transaction confirmed',
-          description: 'Ready',
-          status: 'success'
-        })
-        setIsLoading(false)
-      })
-      .on('error', (err) => {
-        toast({
-          title: 'Transaction fail',
-          description: err.message,
-          status: 'error'
-        })
-        setIsLoading(false)
-      })
-  }
-
   return (
     <>
       <Flex

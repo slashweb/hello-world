@@ -11,7 +11,7 @@ function App() {
     <MainLayout>
       <Routes>
         <Route path="/" exact element={<Home/>}/>
-        <Route path="/courses" exact element={<Courses/>}/>
+        <Route path="/courses" exact element={<Home/>}/>
         <Route path="/content-creator" exact element={<CourseCreator/>}/>
       </Routes>
     </MainLayout>

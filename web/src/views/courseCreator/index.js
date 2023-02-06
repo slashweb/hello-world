@@ -15,10 +15,58 @@ import {
   useToast
 } from '@chakra-ui/react';
 import {useWeb3React} from "@web3-react/core";
-import useUsers from '../../hooks/useUsers'
+import useCourses from '../../hooks/useCourses'
 
-const courseCreator = () => {
+const Home = () => {
+  const {active, account} = useWeb3React()
+  const [isLoading, setIsLoading] = useState(false)
+  const [name, setName] = useState()
+  const [desc, setDesc] = useState()
+  const [category, setCategory] = useState()
+  const coursesContract = useCourses();
+  const toast = useToast();
 
+  const getCourses = useCallback(async () => {
+    if (coursesContract) {
+      const result = await coursesContract?.methods?.getCoursesByAuthor(account)?.call()
+      console.log('courses', result)
+    }
+  }, [coursesContract])
+
+  useEffect(() => {
+    getCourses()
+  }, [getCourses])
+
+
+  const createNewCourse = async () => {
+    setIsLoading(true)
+    coursesContract?.methods?.createNewCourse(name, category, desc)?.send({
+      from: account
+    })
+      .on('transactionHash', (txHash) => {
+        toast({
+          title: 'Transaction send',
+          description: txHash,
+          status: 'info'
+        })
+      })
+      .on('receipt', () => {
+        toast({
+          title: 'Transaction confirmed',
+          description: 'Ready',
+          status: 'success'
+        })
+        setIsLoading(false)
+      })
+      .on('error', (err) => {
+        toast({
+          title: 'Transaction fail',
+          description: err.message,
+          status: 'error'
+        })
+        setIsLoading(false)
+      })
+  }
 
   return (
     <>
@@ -27,11 +75,11 @@ const courseCreator = () => {
         align={'center'}
         justify={'center'}
         bg={'gray.50'}>
-        <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+        <Stack spacing={8} mx={'auto'} w={'50%'} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'4xl'}>Creating new content</Heading>
+            <Heading fontSize={'4xl'}>Create new course</Heading>
             <Text fontSize={'lg'} color={'gray.600'}>
-              To start creating content
+              This course can change the world
             </Text>
           </Stack>
           <Box
@@ -49,13 +97,17 @@ const courseCreator = () => {
                 <Stack spacing={4}>
                   <FormControl id="name">
                     <FormLabel>Name</FormLabel>
-                    <Input onChange={(e) => state.name = e.target.value} type="text"/>
+                    <Input onChange={(e) => setName(e.target.value)} type="text"/>
+                  </FormControl>
+                  <FormControl id="description">
+                    <FormLabel>Description</FormLabel>
+                    <Input onChange={(e) => setDesc(e.target.value)} type="text"/>
                   </FormControl>
                   <FormControl id="password">
                     <FormLabel>Category</FormLabel>
                     <Select
                       placeholder={'Select category'}
-                      onChange={(e) => state.category = e.target.value}
+                      onChange={(e) => setCategory(e.target.value)}
                     >
                       <option value={'Information Techonolgies'}>Information Technologies</option>
                       <option value={'Graphic Design'}>Graphic Design</option>
@@ -65,7 +117,7 @@ const courseCreator = () => {
 
                     <Button
                       onClick={() => {
-                        createNewUser()
+                        createNewCourse()
                       }}
                       isLoading={isLoading}
                       bg={'blue.400'}
@@ -93,4 +145,4 @@ const courseCreator = () => {
 
 }
 
-export default courseCreator;
+export default Home;
